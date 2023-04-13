@@ -15,7 +15,7 @@ $kasform.Text = " Проверка ККМ "
 $kasform.StartPosition = "manual"
 $kasform.Location = "1000, 200"
 $kasform.AutoSize = $true
-$kasform.Size = New-Object System.Drawing.Size(390,450)
+$kasform.Size = New-Object System.Drawing.Size(600,450)
 
 $kaslabel1 = New-Object System.Windows.Forms.label
 $kaslabel1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",$Object_title.size,[System.Drawing.FontStyle]::Bold)
@@ -28,7 +28,7 @@ $kasform.Controls.Add($kaslabel1)
 $textboxkas = New-Object System.Windows.Forms.TextBox
 $textboxkas.Location  = New-Object System.Drawing.Point(20,40)
 $textboxkas.Font =  [System.Drawing.Font]::new("Microsoft Sans Serif", 12, [System.Drawing.FontStyle]::bold)  
-$textboxkas.Width = 250
+$textboxkas.Width = 270
 $textboxkas.Height =30
 $textboxkas.Text = '    IP или Имя компа '
 $textboxkas.AutoSize = $false 
@@ -40,7 +40,7 @@ $textboxkas.Text ="   $comp"
 
 $kaslabel1 = New-Object System.Windows.Forms.label
 $kaslabel1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",$Object_title.size,[System.Drawing.FontStyle]::Bold)
-$kaslabel1.Text = "Машинка: $sn_kkm " 
+$kaslabel1.Text = "Статус проверки: " 
 $kaslabel1.Location = New-Object System.Drawing.Point(20,100)
 $kaslabel1.AutoSize = $true
 $kaslabel1.Visible = $true
@@ -48,7 +48,7 @@ $kasform.Controls.Add($kaslabel1)
 
 $kaslabel2 = New-Object System.Windows.Forms.label
 $kaslabel2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",$Object_title.size,[System.Drawing.FontStyle]::Regular)
-$kaslabel2.Text = " Порт COM $pv" 
+$kaslabel2.Text = " Все хорошо" 
 $kaslabel2.Location = New-Object System.Drawing.Point(20,140)
 $kaslabel2.AutoSize = $true
 $kaslabel2.Visible = $true
@@ -56,7 +56,7 @@ $kasform.Controls.Add($kaslabel2)
 
 $kaslabel3 = New-Object System.Windows.Forms.label
 $kaslabel3.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",$Object_title.size,[System.Drawing.FontStyle]::Regular)
-$kaslabel3.Text = " Служба "
+$kaslabel3.Text = " Есть проблемы "
 $kaslabel3.Location = New-Object System.Drawing.Point(20,180)
 $kaslabel3.AutoSize = $true
 $kaslabel3.Visible = $true
@@ -189,13 +189,13 @@ $kasform.controls.add($pictureBox)
 
 # Кнопки 
 $uButton1 = New-Object System.Windows.Forms.Button
-$uButton1.Location = New-Object System.Drawing.Point(110,290)
+$uButton1.Location = New-Object System.Drawing.Point(160,80)
 $uButton1.Font =  [System.Drawing.Font]::new("Times New Roman", 9, [System.Drawing.FontStyle]::bold) 
 $uButton1.Text               =  " ПРОВЕРИТЬ "
 $uButton1.Size = New-Object System.Drawing.Size(120,50)
 #  вызываем функцию отправки сообщения
 $uButton1.add_click({
-[System.Windows.Forms.MessageBox]::Show("Награждение произведено" )
+[System.Windows.Forms.MessageBox]::Show("Проверено" )
 
 })
 
@@ -218,11 +218,68 @@ $uButton2.add_click({
 
 #>
 
+$DataGridViewKas                   = New-Object system.Windows.Forms.DataGridView
+$DataGridViewKas.width             = 545
+$DataGridViewKas.height            = 170
+$DataGridViewKas.location          = New-Object System.Drawing.Point(30,220)
+$DataGridViewKas.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",10,[System.Drawing.FontStyle]::Regular)
+$DataGridViewKas.ColumnHeadersHeight=30
+$DataGridViewKas.visible = $true
+$DataGridViewKas.AllowDrop = $false
+$DataGridViewKas.AllowUserToAddRows = $false
+$DataGridViewKas.AllowUserToDeleteRows = $false
+$DataGridViewKas.AllowUserToOrderColumns = $false
+$DataGridViewKas.AllowUserToResizeColumns = $false
+$DataGridViewKas.AllowUserToResizeRows = $false
+$DataGridViewKas.RowHeadersVisible = $false
+
+$DataGridViewKas.ColumnCount = 5
+$DataGridViewKas.ColumnHeadersVisible = $true
+$DataGridViewKas.Columns[0].Name = "SN машинки"
+$DataGridViewKas.columns[0].width = 150
+$DataGridViewKas.Columns[1].Name = "COM порт"
+$DataGridViewKas.columns[1].width = 70
+$DataGridViewKas.Columns[2].Name = "Статус"
+$DataGridViewKas.columns[2].width = 90
+$DataGridViewKas.Columns[3].Name = "Служба"
+$DataGridViewKas.columns[3].width = 150
+$DataGridViewKas.Columns[4].Name = "Статус"
+$DataGridViewKas.columns[4].width = 80
+
+# $DataGridView2.Visible = $true
+# $DataGridView2.Rows.Clear()
+
+$DataGridViewMusor                   = New-Object system.Windows.Forms.DataGridView
+$DataGridViewMusor.width             = 545
+$DataGridViewMusor.height            = 170
+$DataGridViewMusor.location          = New-Object System.Drawing.Point(30,420)
+$DataGridViewMusor.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",10,[System.Drawing.FontStyle]::Regular)
+$DataGridViewMusor.ColumnHeadersHeight=30
+$DataGridViewMusor.visible = $true
+$DataGridViewMusor.AllowDrop = $false
+$DataGridViewMusor.AllowUserToAddRows = $false
+$DataGridViewMusor.AllowUserToDeleteRows = $false
+$DataGridViewMusor.AllowUserToOrderColumns = $false
+$DataGridViewMusor.AllowUserToResizeColumns = $false
+$DataGridViewMusor.AllowUserToResizeRows = $false
+$DataGridViewMusor.RowHeadersVisible = $false
+
+$DataGridViewMusor.ColumnCount = 1
+$DataGridViewMusor.ColumnHeadersVisible = $true
+$DataGridViewMusor.Columns[0].Name = "Странные имена в папке c:\kkt"
+$DataGridViewMusor.columns[0].width = 250
+
+
 #вывод на форму 
+$kasform.Controls.Add($DataGridViewKas)
+$kasform.Controls.Add($DataGridViewMusor)
 $kasform.Controls.Add($uButton2)
+$DataGridViewKas.Rows.Clear()
+$DataGridViewMusor.Rows.Clear()
+Mas_Statuses
+
 
 $kasform.Topmost = $true
-
 $result = $kasform.ShowDialog()
 
 }
@@ -257,11 +314,44 @@ $("Comp = " + $confdata.GetAttribute("ip"))
 
 
 #>
+
+<#
+
+function Get-mac ($NameHost) {
+	$DataGridViewKas.Rows.Clear()	
+  Get-WmiObject Win32_NetworkAdapter -ComputerName $NameHost -Filter 'NetConnectionStatus=2' |
+    ForEach-Object {
+	  $k = ""
+      $result = 1 | Select-Object Name, IP, MAC
+      $result.Name = $_.Name
+      $result.MAC = $_.MacAddress
+      $config = $_.GetRelated('Win32_NetworkAdapterConfiguration') 
+      $result.IP = $config | Select-Object -expand IPAddress
+	  foreach ($ip in $result.IP)
+	  {
+			$in = $ip.Remove(2)
+			if ($in -eq "10")
+			{
+				$k = $k + $ip + " "
+			}
+			
+	  }
+      $DataGridViewKas.Rows.Add($result.Name,$k,$result.MAC)
+    }
+ 
+}
+
+#>
+
+
 #  ==================================================================================
 #  PORTS
 
+function Mas_Statuses()
 
+{
 $comp = "yar-akassa02"
+
 
 $spisok_sn_mashinok = Get-ChildItem "\\$comp\c$\kkt"
 $spisok_sn_mashinok
@@ -290,6 +380,8 @@ $COMportList = invoke-command -cn $comp -ScriptBlock {[System.IO.Ports.SerialPor
 Write-Output "================================================================="
 Write-Output " Машинка $sn_mash"
 Write-Output " Порт из конфы $pv"
+
+
 #foreach ($single_port in $mash_port)
 #{
 $pv = $pv -replace 'COM' 
@@ -297,16 +389,15 @@ $pv = $pv -replace 'COM'
 if ($mash_port -contains  $pv)
 #if ($pv -eq $single_port)
 {
-Write-host -ForegroundColor Green " Порт COM"$pv" есть"
+#Write-host -ForegroundColor Green " Порт COM"$pv" есть"
+$DataGridViewKas.Rows.Add($sn_mash,$pv,"Включен",$sn_mash,"Запущена")
 }
 else
 {
-Write-Host -ForegroundColor Red " Порт не найден  COM"$pv" COM"$mash_port 
+#Write-Host -ForegroundColor Red " Порт не найден  COM"$pv" COM"$mash_port 
+$DataGridViewKas.Rows.Add($sn_mash,$pv,"НЕ НАЙДЕН",$sn_mash,"Запущена")
 }
 Write-Output "================================================================="
-
-
-
 
 
 #| {$_ -replace '(.+(?=COM\d*)')}
@@ -333,11 +424,12 @@ Write-Output "================================================================="
 else
 {
 Write-Output "Найдено $sn_mash ,что не похоже на SN машинки"
+$DataGridViewMusor.Rows.Add($sn_mash)
+    }
+  }
 }
 
-}
-
-kasScreen
+kasScreen # РИСУЕМ ФОРМУ
 
 
 <#  Ниже какая-то фигня
