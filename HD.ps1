@@ -197,6 +197,9 @@ $textbox3.Text =$login
     $Ruplabel9.Visible = $true
     $Ruplabel10.Visible = $true
     $Ruplabel10.text = "$t1 дней, $t2 часов, $t3 минут"
+
+    $photouser = Get-ADUser -Identity $textbox3.Text -PR * |Select-Object thumbnailPhoto 
+    $pictureBox.Image = $photouser.thumbnailPhoto
 	
 
 }
@@ -622,13 +625,13 @@ Add-Type -AssemblyName System.Drawing
 
 # Начинаем описывать форму
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "HelpDesk Utility  v. 12.07.22"
+$form.Text = "HelpDesk Utility v. 12.04.23 Kosmonafft"
 #$form.Width = 360
 #$form.Height = 260
 $form.StartPosition = "manual"
 $form.Location = "1000, 200"
 $form.AutoSize = $true
-$form.Size = New-Object System.Drawing.Size(390,470)
+$form.Size = New-Object System.Drawing.Size(400,490)
    #переменная описания поля и кнопки 
 $ToolTip = New-Object System.Windows.Forms.ToolTip
 $ToolTip.BackColor = [System.Drawing.Color]::LightGoldenrodYellow
@@ -1033,7 +1036,7 @@ $CheckBoxHC.Location  = New-Object System.Drawing.Point(265,125)
 $form.Controls.Add($CheckBoxHC)
 
 $buttonPGP = New-Object System.Windows.Forms.Button
-$buttonPGP.Location = New-Object System.Drawing.Point(302,105)
+$buttonPGP.Location = New-Object System.Drawing.Point(302,125)
 $buttonPGP.Font =  [System.Drawing.Font]::new("Times New Roman", 9, [System.Drawing.FontStyle]::Underline) 
 $buttonPGP.Size = New-Object System.Drawing.Size(60,40)
 #$button5.Multiline = $true
@@ -1122,8 +1125,9 @@ $button8.add_click(
 {
 $PGPname = $textbox3.Text
 $namehost = $textbox2.Text
+$disk_path = '\\$namehost\d$\pgp\$PGPname.tc'
 
-if (Test-Path '\\$namehost\d$\pgp\$PGPname.hc')
+if (Test-Path "\\$namehost\d$\pgp\$PGPname.hc")
 {
 $Install_Path = "\\$namehost\c$\Users\$PGPname\Desktop\"
 $WSShell = New-Object -com WScript.Shell
@@ -1132,10 +1136,10 @@ $NewShortcut = $WSShell.CreateShortcut($ShortcutPath)
 $NewShortcut.TargetPath = "\\$namehost\d$\pgp\$PGPname.hc"
 $NewShortcut.Save()
 $statusLabel.Text = "Ярлык $PGPname.lnk создан"
-sleep 20
+sleep 15
 $statusLabel.Text ="Готов"
 }
-elseif (Test-Path '\\$namehost\d$\pgp\$PGPname.tc')
+elseif (Test-Path "\\$namehost\d$\pgp\$PGPname.tc")
 {
 $Install_Path = "\\$namehost\c$\Users\$PGPname\Desktop\"
 $WSShell = New-Object -com WScript.Shell
@@ -1144,29 +1148,15 @@ $NewShortcut = $WSShell.CreateShortcut($ShortcutPath)
 $NewShortcut.TargetPath = "\\$namehost\d$\pgp\$PGPname.tc"
 $NewShortcut.Save()
 $statusLabel.Text = "Ярлык $PGPname.lnk создан"
-sleep 20
+sleep 15
 $statusLabel.Text ="Готов"
 }
 else
 {
 $statusLabel.Text = "ВНИМАНИЕ!!! Ярлык $PGPname.lnk НЕ создан"
-sleep 20
+sleep 15
 $statusLabel.Text ="Готов"
 }
-
-
-
-# ==== Вывод фотографии
-
-$photouser = Get-ADUser -Identity $textbox3.Text 
-$pictureBox = new-object Windows.Forms.PictureBox
-$pictureBox.Location = New-Object System.Drawing.Size(240,100)
-$pictureBox.Size = New-Object System.Drawing.Size($img.Width,$img.Height)
-$pictureBox.Image = $photouser.thumbnailPhoto
-$form.controls.add($pictureBox)
-
-
-
 
 
 
@@ -1241,6 +1231,33 @@ $iconBytes       = [Convert]::FromBase64String($iconBase64)
 $stream          = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 $Form.Icon       = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 #>
+
+
+# ==== Вывод фотографии
+
+[reflection.assembly]::LoadWithPartialName("System.Windows.Forms")
+$file = (get-item 'T:\1\photo1.JPG')
+$img = [System.Drawing.Image]::Fromfile($file);
+
+[System.Windows.Forms.Application]::EnableVisualStyles();
+
+
+# Это описание поля ввода фотографии
+# Сама фотография выводится в блоке запроса вывода времени работы компа
+
+$photouser = Get-ADUser -Identity $textbox3.Text -PR * |Select-Object thumbnailPhoto
+$pictureBox = new-object Windows.Forms.PictureBox
+$pictureBox.Location = New-Object System.Drawing.Size(302,50)
+$pictureBox.Size = New-Object System.Drawing.Size(70,70)
+# $pictureBox.Size = New-Object System.Drawing.Size($img.Width,$img.Height)
+$pictureBox.Image = $img
+# $pictureBox.Image = $photouser.thumbnailPhoto
+
+$form.Controls.Add($pictureBox)
+# IP  для тестрования 10.77.54.251
+
+
+
 	
 $form.Icon = New-Object System.Drawing.Icon("\\ftp\install\Distr\HDicon.ico")
 
